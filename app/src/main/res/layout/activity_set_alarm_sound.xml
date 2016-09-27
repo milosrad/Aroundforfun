@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+
+        android:id="@+id/scrollViewsetalarmsound">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <EditText
+                android:id="@+id/edittextsetalarmsound"
+                android:layout_width="match_parent"
+                android:layout_height="145dp"
+                android:inputType="text"/>
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/button_set_alarm_sound"
+        android:id="@+id/buttonsetalarmsoundactivity"
+        android:layout_below="@+id/scrollViewsetalarmsound"
+        android:layout_centerHorizontal="true" />
+
+
+
+</RelativeLayout>

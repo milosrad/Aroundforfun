@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/buttonsavesettingsgotomainwindow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/button_savesettings"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        />
+
+
+
+
+
+
+    <Button
+        android:id="@+id/buttonresetcurrentcounterstatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/button_reset_current_counter_status"
+        android:layout_below="@id/buttonsavesettingsgotomainwindow"
+        android:layout_alignLeft="@+id/buttonsavesettingsgotomainwindow"
+        android:layout_alignStart="@+id/buttonsavesettingsgotomainwindow"
+        android:layout_alignRight="@+id/buttonsavesettingsgotomainwindow"
+        android:layout_alignEnd="@+id/buttonsavesettingsgotomainwindow" />
+    <Button
+        android:id="@+id/buttonsetcounter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/button_set_counter"
+        android:layout_below="@id/buttonresetcurrentcounterstatus"
+        android:layout_alignLeft="@+id/buttonresetcurrentcounterstatus"
+        android:layout_alignStart="@+id/buttonresetcurrentcounterstatus"
+        android:layout_alignRight="@+id/buttonresetcurrentcounterstatus"
+        android:layout_alignEnd="@+id/buttonresetcurrentcounterstatus" />
+
+    <Button
+        android:id="@+id/buttonresetall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/button_reset_all"
+        android:layout_below="@+id/buttonsetcounter"
+        android:layout_alignLeft="@+id/buttonsetcounter"
+        android:layout_alignStart="@+id/buttonsetcounter"
+        android:layout_alignRight="@+id/buttonsetcounter"
+        android:layout_alignEnd="@+id/buttonsetcounter" />
+
+    <Button
+        android:id="@+id/buttonsetcounterlimit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/button_set_counter_limit"
+        android:layout_below="@+id/buttonresetall"
+        android:layout_alignLeft="@+id/buttonresetall"
+        android:layout_alignStart="@+id/buttonresetall"
+        android:layout_alignRight="@+id/buttonresetall"
+        android:layout_alignEnd="@+id/buttonresetall" />
+
+    <Button
+        android:id="@+id/buttonsetprogrambackground"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/button_set_program_background"
+        android:layout_above="@+id/buttonsetalarmsound"
+        android:layout_alignLeft="@+id/buttonsetcounterlimit"
+        android:layout_alignStart="@+id/buttonsetcounterlimit"
+        android:layout_alignRight="@+id/buttonsetcounterlimit"
+        android:layout_alignEnd="@+id/buttonsetcounterlimit" />
+
+    <Button
+        android:id="@+id/buttonsetalarmsound"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/button_set_alarm_sound"
+        android:layout_above="@+id/buttonsetendvideo"
+        android:layout_alignLeft="@+id/buttonsetprogrambackground"
+        android:layout_alignStart="@+id/buttonsetprogrambackground"
+        android:layout_alignRight="@+id/buttonsetprogrambackground"
+        android:layout_alignEnd="@+id/buttonsetprogrambackground" />
+
+    <Button
+        android:id="@+id/buttonsetendvideo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/button_set_end_video"
+        android:layout_above="@+id/buttonsetpassword"
+        android:layout_alignLeft="@+id/buttonsetalarmsound"
+        android:layout_alignStart="@+id/buttonsetalarmsound"
+        android:layout_alignRight="@+id/buttonsetalarmsound"
+        android:layout_alignEnd="@+id/buttonsetalarmsound" />
+
+    <Button
+        android:id="@+id/buttonsetpassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/button_set_password"
+
+        android:layout_above="@+id/buttonexit"
+        android:layout_alignLeft="@+id/buttonsetendvideo"
+        android:layout_alignStart="@+id/buttonsetendvideo"
+        android:layout_alignRight="@+id/buttonsetendvideo"
+        android:layout_alignEnd="@+id/buttonsetendvideo" />
+
+    <Button
+        android:id="@+id/buttonexit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/button_exit"
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@+id/buttonsetpassword"
+        android:layout_alignStart="@+id/buttonsetpassword"
+        android:layout_alignRight="@+id/buttonsetpassword"
+        android:layout_alignEnd="@+id/buttonsetpassword" />
+
+</LinearLayout>

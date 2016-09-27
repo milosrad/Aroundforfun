@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">A round for fun</string>
+    <string name="button_setup">SETUP</string>
+    <string name="button_savesettings">SAVE SETTINGS AND GO TO MAIN WINDOW</string>
+    <string name="button_reset_current_counter_status">	RESET CURRENT COUNTER STATUS</string>
+    <string name="button_set_counter">SET COUNTER</string>
+    <string name="button_reset_all">RESET ALL</string>
+    <string name="button_set_counter_limit">SET COUNTER LIMIT</string>
+    <string name="button_set_program_background">SET PROGRAM BACKGROUND</string>
+    <string name="button_set_alarm_sound">SET ALARM SOUND</string>
+    <string name="button_set_end_video">SET END VIDEO</string>
+    <string name="button_set_password">SET PASSWORD</string>
+    <string name="button_exit">EXIT</string>
+</resources>
