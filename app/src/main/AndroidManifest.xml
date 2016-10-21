@@ -2,39 +2,56 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.user.aroundforfun">
     <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.MEDIA_CONTENT_CONTROL" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+
+
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivityCounter">
+        <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".VideoActivity"/>
-        <activity android:name=".VideoViewActivity"/>
-        <activity android:name=".SettingsActivity"/>
-        <activity android:name=".SetPasswordActivity"/>
-        <activity android:name=".SetAlarmSoundActivity"/>
-        <activity android:name=".SetEndVideoActivity"/>
-        <activity android:name=".SetProgramBackgroundActivity"/>
-        <activity android:name=".SettingsActivityCounter"/>
-        <activity android:name=".MainActivity"/>
-        <activity android:name=".SetCounterActivity"/>
-        <activity android:name=".SetCounterLimitActivity"/>
+        <activity android:name=".activity.VideoActivity"/>
+        <activity android:name=".activity.VideoViewActivity"/>
+        <activity android:name=".activity.SettingsActivity"/>
+        <activity android:name=".activity.SetPasswordActivity"/>
+        <activity android:name=".activity.SetAlarmSoundActivity"/>
+        <activity android:name=".activity.SetEndVideoActivity"/>
+        <activity android:name=".activity.SetProgramBackgroundActivity"/>
+        <activity android:name=".activity.SettingsActivityCounter"/>
+        <activity android:name=".activity.MainActivityCounter"/>
+        <activity android:name=".activity.SetCounterActivity"/>
+        <activity android:name=".activity.SetCounterLimitActivity"/>
 
-
-        <uses-permission android:name="android.permission.GET_TASKS" />
-
-        <receiver android:name=".RemoteControlReceiver">
+        <!--receiver android:name=".activity.receiver.RemoteControlReceiver"
+            android:enabled="true">
             <intent-filter>
-                <action android:name="android.intent.action.MEDIA_BUTTON" />
+                <action android:name="android.intent.action.MEDIA_BUTTON"/>
+                <action android:name="android.intent.action.HEADSET_PLUG" />
+            </intent-filter>
+        </receiver-->
+
+        <receiver android:name=".activity.MainActivity$RemoteControlReceiver"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MEDIA_BUTTON"/>
+                <action android:name="android.intent.action.HEADSET_PLUG" />
             </intent-filter>
         </receiver>
+
+
+
+
+
     </application>
 
 </manifest>

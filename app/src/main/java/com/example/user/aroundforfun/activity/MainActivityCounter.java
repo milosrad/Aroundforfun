@@ -1,4 +1,4 @@
-package com.example.user.aroundforfun;
+package com.example.user.aroundforfun.activity;
 
 import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
@@ -6,7 +6,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.PixelFormat;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.Ringtone;
@@ -22,22 +21,20 @@ import android.view.KeyEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.MediaController;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 import android.widget.VideoView;
+
+import com.example.user.aroundforfun.R;
 
 import java.io.File;
 import java.io.IOException;
 
-public class MainActivity extends AppCompatActivity implements SurfaceHolder.Callback {
+public class MainActivityCounter extends AppCompatActivity implements SurfaceHolder.Callback {
 
     private Button mButtonSetup,mButtonCount;
     private TextView mCounter;
@@ -62,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
     private RemoteControlReceiver myReceiver;
 
-    IntentFilter filter = new IntentFilter(Intent.ACTION_HEADSET_PLUG);
+    IntentFilter filter = new IntentFilter(Intent.ACTION_MEDIA_BUTTON);
 
     public static int counterlimit;
 
@@ -73,6 +70,11 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
     public static void setCounterlimit(int counterlimitsettings) {
         counterlimit = counterlimitsettings;
     }
+
+
+    public static Counter counter;
+
+    private int countervalue=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,8 +89,14 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
         initComponents();
         addListeners();
-        
-       
+
+       /* int value=getIntent().getIntExtra("value",0);
+        if(value!=0) counter= new Counter(value);
+        else{counter=new Counter(0);} */
+
+
+
+
 
     /*    getWindow().setFormat(PixelFormat.UNKNOWN);
         surfaceView = (SurfaceView)findViewById(R.id.surfaceview);
@@ -110,13 +118,23 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
         mRoot=(RelativeLayout)findViewById(R.id.root);
         videoView=(VideoView)findViewById(R.id.videoView);
 
+
         fade_in_animation= AnimationUtils.loadAnimation(this,R.anim.fade_in);
 
         myReceiver=new RemoteControlReceiver();
 
         registerReceiver(myReceiver,filter);
 
-        
+        /*int value=getIntent().getIntExtra("value",0);
+        if(value!=0) counter= new Counter(value);
+        else{counter=new Counter(0);}  */
+
+
+
+
+
+
+
 
 
 
@@ -137,7 +155,7 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
             @Override
             public void onClick(View view) {
 
-                Intent intent= new Intent(MainActivity.this,SettingsActivity.class);
+                Intent intent= new Intent(MainActivityCounter.this,SettingsActivityCounter.class);
                 startActivity(intent);
             }
         });
@@ -167,8 +185,12 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
         number=Integer.parseInt(mCounter.getText().toString());
 
+
+
         number++;
         mCounter.setText(""+number);
+
+        counter.setNumber(number);
 
         if (number%counterlimit==0){
             //mCounter.startAnimation(fade_in_animation);
@@ -202,11 +224,11 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
 
 
-        //    playSound();
+            //    playSound();
 
-        //    videoView.setVisibility(View.VISIBLE);
+            //    videoView.setVisibility(View.VISIBLE);
 
-        //    playVideo();
+            //    playVideo();
 
 
          /*   Intent intent= new Intent(MainActivity.this,VideoViewActivity.class);
@@ -222,8 +244,17 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
             Intent intent = new Intent(android.content.Intent.ACTION_VIEW);
             Uri data = Uri.parse(stringPath1);
-           // intent.setDataAndType(data, "video/mp4");
+            // intent.setDataAndType(data, "video/mp4");
             intent.setDataAndType(data, "video/*");
+            startActivity(intent);
+
+            intent = new Intent(Intent.ACTION_VIEW);
+
+            File sdCard = Environment.getExternalStorageDirectory();
+            File file = new File(sdCard, "/foldername/video-2012-12-26-21-26-44.mp4");
+
+            intent.setDataAndType(Uri.fromFile(file), "video/*");
+
             startActivity(intent);
 
          /*   surfaceView.setVisibility(View.VISIBLE);
@@ -284,7 +315,7 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
     @Override
     public void onBackPressed() {
-       // super.onBackPressed();
+        // super.onBackPressed();
     }
 
     @Override
@@ -337,8 +368,8 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
         Uri data=Uri.parse(stringPath2);
 
-       // MediaPlayer player=MediaPlayer.create(getApplicationContext(),data);
-       MediaPlayer player=new MediaPlayer();
+        // MediaPlayer player=MediaPlayer.create(getApplicationContext(),data);
+        MediaPlayer player=new MediaPlayer();
         try {
             player.setDataSource(stringPath2);
             player.prepare();
@@ -393,8 +424,33 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
         }
     }
 
-    
-    
-    
 
+
+
+    public class Counter{
+
+        int number;
+
+        public Counter(int number) {
+            this.number = number;
+        }
+
+        public int getNumber() {
+            return number;
+        }
+
+        public void setNumber(int number) {
+            this.number = number;
+        }
+    }
+
+
+    public Counter getCounter() {
+        return counter;
+    }
+
+    public void setCounter(Counter counter) {
+        this.counter = counter;
+    }
 }
+

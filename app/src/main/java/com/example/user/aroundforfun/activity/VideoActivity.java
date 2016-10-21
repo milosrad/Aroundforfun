@@ -1,4 +1,4 @@
-package com.example.user.aroundforfun;
+package com.example.user.aroundforfun.activity;
 
 import android.app.Activity;
 import android.graphics.PixelFormat;
@@ -7,6 +7,8 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+
+import com.example.user.aroundforfun.R;
 
 import java.io.IOException;
 

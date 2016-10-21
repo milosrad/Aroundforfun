@@ -1,4 +1,4 @@
-package com.example.user.aroundforfun;
+package com.example.user.aroundforfun.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -6,20 +6,22 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.user.aroundforfun.R;
+
 /**
  * Created by User on 11.8.2016.
  */
-public class SetPasswordActivity extends Activity {
+public class SetCounterActivity extends Activity {
 
-    private Button mSetPasswordButton;
-    private EditText mTextPassword;
+    private Button mSetCounterButton;
+    private EditText mText;
 
     static final int READ_BLOCK_SIZE = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_set_password);
+        setContentView(R.layout.activity_set_counter);
 
         initComponents();
         addListeners();
@@ -28,9 +30,9 @@ public class SetPasswordActivity extends Activity {
 
     private void initComponents(){
 
-        mSetPasswordButton=(Button)findViewById(R.id.buttonsetpasswordactivity);
+        mSetCounterButton=(Button)findViewById(R.id.buttonsetcounteractivity);
 
-        mTextPassword=(EditText)findViewById(R.id.edittextsetpassword);
+        mText=(EditText)findViewById(R.id.edittextsetcounter);
 
 
 
@@ -39,13 +41,14 @@ public class SetPasswordActivity extends Activity {
     private void addListeners(){
 
 
-        mSetPasswordButton.setOnClickListener(new View.OnClickListener() {
+        mSetCounterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
 
-
-
+                int counter=Integer.parseInt(mText.getText().toString());
+                SettingsActivityCounter.countervalue=counter;
+                finish();
             }
         });
 

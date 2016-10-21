@@ -1,10 +1,12 @@
-package com.example.user.aroundforfun;
+package com.example.user.aroundforfun.activity;
 
 import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.MediaController;
 import android.widget.VideoView;
+
+import com.example.user.aroundforfun.R;
 
 /**
  * Created by User on 7.8.2016.

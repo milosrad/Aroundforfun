@@ -1,4 +1,4 @@
-package com.example.user.aroundforfun;
+package com.example.user.aroundforfun.activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -11,6 +11,8 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+
+import com.example.user.aroundforfun.R;
 
 /**
  * Created by User on 11.8.2016.

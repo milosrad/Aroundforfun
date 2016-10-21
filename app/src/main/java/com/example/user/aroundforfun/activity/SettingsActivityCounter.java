@@ -1,4 +1,4 @@
-package com.example.user.aroundforfun;
+package com.example.user.aroundforfun.activity;
 
 import android.app.Activity;
 import android.app.ActivityManager;
@@ -7,21 +7,37 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.user.aroundforfun.R;
+
 /**
  * Created by User on 11.8.2016.
  */
-public class SettingsActivity extends Activity {
+public class SettingsActivityCounter extends Activity {
 
     private Button mSaveandGoToMainWindow,mResetCurrentCounterStatus,mSetCounter;
     private Button mResetAll,mSetCounterLimit,mSetProgramBackground;
     private Button mSetAlarmSound,mSetEndVideo,mSetPassword;
     private Button mExit;
+
+
+    private boolean isResetAllPressed;
+
+    public static int countervalue;
+    public static int counterlimitvalue;
+
+    public static Bitmap backgroundselectedimage;
+
+    public static String videopath;
+    public static String audioopath;
+
+
 
 
 
@@ -33,6 +49,8 @@ public class SettingsActivity extends Activity {
 
         initComponents();
         addListeners();
+
+        countervalue=0;
     }
 
 
@@ -49,6 +67,8 @@ public class SettingsActivity extends Activity {
         mSetPassword=(Button)findViewById(R.id.buttonsetpassword);
         mExit=(Button)findViewById(R.id.buttonexit);
 
+        isResetAllPressed=false;
+
     }
 
     private void addListeners(){
@@ -57,11 +77,14 @@ public class SettingsActivity extends Activity {
             @Override
             public void onClick(View view) {
 
+                if (isResetAllPressed){mSaveandGoToMainWindow.setClickable(false);}
 
+                else {
 
-                Intent mainintent=new Intent(SettingsActivity.this,MainActivity.class);
-
-                startActivity(mainintent);
+                    Intent mainintent = new Intent(SettingsActivityCounter.this, MainActivity.class);
+                    mainintent.putExtra("value", countervalue);
+                    startActivity(mainintent);
+                }
 
             }
         });
@@ -71,7 +94,7 @@ public class SettingsActivity extends Activity {
             public void onClick(View view) {
 
 
-               MainActivity.number=0;
+                MainActivityCounter.counter.setNumber(0);
 
             }
         });
@@ -81,7 +104,8 @@ public class SettingsActivity extends Activity {
             public void onClick(View view) {
 
 
-                open(view);
+                Intent setCounterIntent=new Intent(SettingsActivityCounter.this,SetCounterActivity.class);
+                startActivity(setCounterIntent);
 
             }
         });
@@ -89,6 +113,8 @@ public class SettingsActivity extends Activity {
         mResetAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                isResetAllPressed=true;
 
                 open(view);
 
@@ -100,7 +126,10 @@ public class SettingsActivity extends Activity {
             public void onClick(View view) {
 
 
-                open(view);
+
+                Intent setCounterLimitIntent=new Intent(SettingsActivityCounter.this,SetCounterLimitActivity.class);
+                startActivity(setCounterLimitIntent);
+
 
             }
         });
@@ -109,7 +138,7 @@ public class SettingsActivity extends Activity {
             @Override
             public void onClick(View view) {
 
-                Intent setbackground= new Intent(SettingsActivity.this,SetProgramBackgroundActivity.class);
+                Intent setbackground= new Intent(SettingsActivityCounter.this,SetProgramBackgroundActivity.class);
                 startActivity(setbackground);
 
 
@@ -120,7 +149,7 @@ public class SettingsActivity extends Activity {
             @Override
             public void onClick(View view) {
 
-                Intent alarmintent= new Intent(SettingsActivity.this,SetAlarmSoundActivity.class);
+                Intent alarmintent= new Intent(SettingsActivityCounter.this,SetAlarmSoundActivity.class);
                 startActivity(alarmintent);
 
 
@@ -133,7 +162,7 @@ public class SettingsActivity extends Activity {
 
 
 
-                Intent videointent= new Intent(SettingsActivity.this,SetEndVideoActivity.class);
+                Intent videointent= new Intent(SettingsActivityCounter.this,SetEndVideoActivity.class);
                 startActivity(videointent);
 
             }
@@ -143,7 +172,7 @@ public class SettingsActivity extends Activity {
             @Override
             public void onClick(View view) {
 
-                Intent passwordintent= new Intent(SettingsActivity.this,SetPasswordActivity.class);
+                Intent passwordintent= new Intent(SettingsActivityCounter.this,SetPasswordActivity.class);
                 startActivity(passwordintent);
 
 
@@ -154,6 +183,8 @@ public class SettingsActivity extends Activity {
         mExit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                isResetAllPressed=false;
 
                 finishAffinity();
 
@@ -173,7 +204,7 @@ public class SettingsActivity extends Activity {
         alertDialogBuilder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface arg0, int arg1) {
-                Toast.makeText(SettingsActivity.this,"You clicked yes button",Toast.LENGTH_LONG).show();
+                Toast.makeText(SettingsActivityCounter.this,"You clicked yes button",Toast.LENGTH_LONG).show();
 
             }
         });
@@ -226,3 +257,4 @@ public class SettingsActivity extends Activity {
     };
 
 }
+

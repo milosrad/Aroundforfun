@@ -1,4 +1,4 @@
-package com.example.user.aroundforfun;
+package com.example.user.aroundforfun.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -6,20 +6,22 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.user.aroundforfun.R;
+
 /**
  * Created by User on 11.8.2016.
  */
-public class SetCounterLimitActivity extends Activity {
+public class SetPasswordActivity extends Activity {
 
-    private Button mSetCounterLimitButton;
-    private EditText mTextLimit;
+    private Button mSetPasswordButton;
+    private EditText mTextPassword;
 
     static final int READ_BLOCK_SIZE = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_set_counter_limit);
+        setContentView(R.layout.activity_set_password);
 
         initComponents();
         addListeners();
@@ -28,9 +30,9 @@ public class SetCounterLimitActivity extends Activity {
 
     private void initComponents(){
 
-        mSetCounterLimitButton=(Button)findViewById(R.id.buttonsetcounterlimitactivity);
+        mSetPasswordButton=(Button)findViewById(R.id.buttonsetpasswordactivity);
 
-        mTextLimit=(EditText)findViewById(R.id.edittextsetcounterlimit);
+        mTextPassword=(EditText)findViewById(R.id.edittextsetpassword);
 
 
 
@@ -39,14 +41,12 @@ public class SetCounterLimitActivity extends Activity {
     private void addListeners(){
 
 
-        mSetCounterLimitButton.setOnClickListener(new View.OnClickListener() {
+        mSetPasswordButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
 
-                int limitvalue=Integer.parseInt(mTextLimit.getText().toString());
-                SettingsActivityCounter.counterlimitvalue=limitvalue;
-                finish();
+
 
             }
         });

@@ -1,32 +1,27 @@
-package com.example.user.aroundforfun;
+package com.example.user.aroundforfun.activity;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import com.example.user.aroundforfun.R;
 
 /**
  * Created by User on 11.8.2016.
  */
-public class SetCounterActivity extends Activity {
+public class SetCounterLimitActivity extends Activity {
 
-    private Button mSetCounterButton;
-    private EditText mText;
+    private Button mSetCounterLimitButton;
+    private EditText mTextLimit;
 
     static final int READ_BLOCK_SIZE = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_set_counter);
+        setContentView(R.layout.activity_set_counter_limit);
 
         initComponents();
         addListeners();
@@ -35,9 +30,9 @@ public class SetCounterActivity extends Activity {
 
     private void initComponents(){
 
-        mSetCounterButton=(Button)findViewById(R.id.buttonsetcounteractivity);
+        mSetCounterLimitButton=(Button)findViewById(R.id.buttonsetcounterlimitactivity);
 
-        mText=(EditText)findViewById(R.id.edittextsetcounter);
+        mTextLimit=(EditText)findViewById(R.id.edittextsetcounterlimit);
 
 
 
@@ -46,14 +41,15 @@ public class SetCounterActivity extends Activity {
     private void addListeners(){
 
 
-        mSetCounterButton.setOnClickListener(new View.OnClickListener() {
+        mSetCounterLimitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
 
-                int counter=Integer.parseInt(mText.getText().toString());
-                SettingsActivityCounter.countervalue=counter;
+                int limitvalue=Integer.parseInt(mTextLimit.getText().toString());
+                SettingsActivityCounter.counterlimitvalue=limitvalue;
                 finish();
+
             }
         });
 

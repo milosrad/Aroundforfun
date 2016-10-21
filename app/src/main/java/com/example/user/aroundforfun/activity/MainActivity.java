@@ -1,4 +1,4 @@
-package com.example.user.aroundforfun;
+package com.example.user.aroundforfun.activity;
 
 import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
@@ -6,15 +6,16 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.PixelFormat;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.media.SoundPool;
+import android.media.session.MediaSession;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.Handler;
+import android.support.v4.media.session.MediaButtonReceiver;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,22 +23,21 @@ import android.view.KeyEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.MediaController;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 import android.widget.VideoView;
+
+import com.example.user.aroundforfun.R;
+import com.example.user.aroundforfun.activity.receiver.AudioControlReceiver;
 
 import java.io.File;
 import java.io.IOException;
 
-public class MainActivityCounter extends AppCompatActivity implements SurfaceHolder.Callback {
+public class MainActivity extends AppCompatActivity implements SurfaceHolder.Callback  {
 
     private Button mButtonSetup,mButtonCount;
     private TextView mCounter;
@@ -46,14 +46,21 @@ public class MainActivityCounter extends AppCompatActivity implements SurfaceHol
     private RelativeLayout mRoot;
     private VideoView videoView;
 
+    private static final int MEDIA_BUTTON_INTENT_EMPIRICAL_PRIORITY_VALUE=1000;
+
+    AudioManager audioManager;
+
     MediaPlayer mediaPlayer;
     SurfaceView surfaceView;
     SurfaceHolder surfaceHolder;
     boolean pausing = false;
 
+    ComponentName receiver;
+
     String stringPath = "sdcard/Test.mp4";
     String stringPath1 = "sdcard/NaKosovu.3gp";
     String stringPath2 = "sdcard/media/audio/notications/facebook_ringtone_pop.m4a";
+    String stringPath3 = "sdcard/movies/tesla_video_srbija_fullHD_saLogotipom.mp4";
 
 
     private SoundPool mSoundPool;
@@ -62,7 +69,7 @@ public class MainActivityCounter extends AppCompatActivity implements SurfaceHol
 
     private RemoteControlReceiver myReceiver;
 
-    IntentFilter filter = new IntentFilter(Intent.ACTION_HEADSET_PLUG);
+    IntentFilter filter;
 
     public static int counterlimit;
 
@@ -74,11 +81,6 @@ public class MainActivityCounter extends AppCompatActivity implements SurfaceHol
         counterlimit = counterlimitsettings;
     }
 
-
-    public static Counter counter;
-
-    private int countervalue=0;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,19 +89,14 @@ public class MainActivityCounter extends AppCompatActivity implements SurfaceHol
 
         this.setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
+
         setCounterlimit(10);
 
 
         initComponents();
         addListeners();
-
-       /* int value=getIntent().getIntExtra("value",0);
-        if(value!=0) counter= new Counter(value);
-        else{counter=new Counter(0);} */
-
-
-
-
+        
+       
 
     /*    getWindow().setFormat(PixelFormat.UNKNOWN);
         surfaceView = (SurfaceView)findViewById(R.id.surfaceview);
@@ -121,21 +118,27 @@ public class MainActivityCounter extends AppCompatActivity implements SurfaceHol
         mRoot=(RelativeLayout)findViewById(R.id.root);
         videoView=(VideoView)findViewById(R.id.videoView);
 
-
         fade_in_animation= AnimationUtils.loadAnimation(this,R.anim.fade_in);
 
-        myReceiver=new RemoteControlReceiver();
+    /*    myReceiver=new RemoteControlReceiver();
 
-        registerReceiver(myReceiver,filter);
+        filter=new IntentFilter(Intent.ACTION_MEDIA_BUTTON);
 
-        /*int value=getIntent().getIntExtra("value",0);
-        if(value!=0) counter= new Counter(value);
-        else{counter=new Counter(0);}  */
+        filter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);
+
+        filter.addAction(Intent.ACTION_HEADSET_PLUG);
+
+        registerReceiver(myReceiver,filter); */
 
 
 
+        audioManager= (AudioManager) getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
 
-
+        receiver= new ComponentName(this,MainActivity.RemoteControlReceiver.class);
+    //    audioManager.registerMediaButtonEventReceiver(new ComponentName(getPackageName(), RemoteControlReceiver.class.getName()));
+    //    audioManager.registerMediaButtonEventReceiver(new ComponentName(this, RemoteControlReceiver.class));
+        audioManager.registerMediaButtonEventReceiver(receiver);
+       // audioManager.unregisterMediaButtonEventReceiver(new ComponentName(getPackageName(), RemoteControlReceiver.class.getName()));
 
 
 
@@ -158,7 +161,7 @@ public class MainActivityCounter extends AppCompatActivity implements SurfaceHol
             @Override
             public void onClick(View view) {
 
-                Intent intent= new Intent(MainActivityCounter.this,SettingsActivityCounter.class);
+                Intent intent= new Intent(MainActivity.this,SettingsActivity.class);
                 startActivity(intent);
             }
         });
@@ -170,30 +173,35 @@ public class MainActivityCounter extends AppCompatActivity implements SurfaceHol
     @Override
     public void onResume() {
 
-        registerReceiver(myReceiver, filter);
+     //   registerReceiver(myReceiver, filter);
+
+     //   audioManager.registerMediaButtonEventReceiver(new ComponentName(getPackageName(), RemoteControlReceiver.class.getName()));
+        audioManager.registerMediaButtonEventReceiver(receiver);
         super.onResume();
     }
 
     @Override
     protected void onPause() {
-        unregisterReceiver(myReceiver);
+    //    unregisterReceiver(myReceiver);
+    //    audioManager.unregisterMediaButtonEventReceiver(new ComponentName(getPackageName(), RemoteControlReceiver.class.getName()));
+        audioManager.unregisterMediaButtonEventReceiver(receiver);
         super.onPause();
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+     //   unregisterReceiver(myReceiver);
+        audioManager.unregisterMediaButtonEventReceiver(new ComponentName(getPackageName(), RemoteControlReceiver.class.getName()));
 
-
-
+    }
 
     private void countupwards(){
 
         number=Integer.parseInt(mCounter.getText().toString());
 
-
-
         number++;
         mCounter.setText(""+number);
-
-        counter.setNumber(number);
 
         if (number%counterlimit==0){
             //mCounter.startAnimation(fade_in_animation);
@@ -227,11 +235,11 @@ public class MainActivityCounter extends AppCompatActivity implements SurfaceHol
 
 
 
-            //    playSound();
+        //    playSound();
 
-            //    videoView.setVisibility(View.VISIBLE);
+        //    videoView.setVisibility(View.VISIBLE);
 
-            //    playVideo();
+        //    playVideo();
 
 
          /*   Intent intent= new Intent(MainActivity.this,VideoViewActivity.class);
@@ -245,10 +253,19 @@ public class MainActivityCounter extends AppCompatActivity implements SurfaceHol
             }
 
 
-            Intent intent = new Intent(android.content.Intent.ACTION_VIEW);
-            Uri data = Uri.parse(stringPath1);
-            // intent.setDataAndType(data, "video/mp4");
-            intent.setDataAndType(data, "video/*");
+         /*   Intent intent = new Intent(android.content.Intent.ACTION_VIEW);
+            Uri data = Uri.parse(stringPath3);
+            intent.setDataAndType(data, "video/mp4");
+        //    intent.setDataAndType(data, "video/*");
+            startActivity(intent); */
+
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+
+            File sdCard = Environment.getExternalStorageDirectory();
+            File file = new File(sdCard, "/movies/tesla_video_srbija_fullHD_saLogotipom.mp4");
+
+            intent.setDataAndType(Uri.fromFile(file), "video/*");
+
             startActivity(intent);
 
          /*   surfaceView.setVisibility(View.VISIBLE);
@@ -271,6 +288,12 @@ public class MainActivityCounter extends AppCompatActivity implements SurfaceHol
             }
 
             mediaPlayer.start(); */
+
+            try {
+                Thread.sleep(3500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
         }
 
@@ -309,7 +332,7 @@ public class MainActivityCounter extends AppCompatActivity implements SurfaceHol
 
     @Override
     public void onBackPressed() {
-        // super.onBackPressed();
+       // super.onBackPressed();
     }
 
     @Override
@@ -362,8 +385,8 @@ public class MainActivityCounter extends AppCompatActivity implements SurfaceHol
 
         Uri data=Uri.parse(stringPath2);
 
-        // MediaPlayer player=MediaPlayer.create(getApplicationContext(),data);
-        MediaPlayer player=new MediaPlayer();
+       // MediaPlayer player=MediaPlayer.create(getApplicationContext(),data);
+       MediaPlayer player=new MediaPlayer();
         try {
             player.setDataSource(stringPath2);
             player.prepare();
@@ -405,46 +428,71 @@ public class MainActivityCounter extends AppCompatActivity implements SurfaceHol
     }
 
 
-    private class RemoteControlReceiver extends BroadcastReceiver {
+    public static class RemoteControlReceiver extends BroadcastReceiver {
+
+        public RemoteControlReceiver(){
+
+            super();
+        }
         @Override
         public void onReceive(Context context, Intent intent) {
             if (Intent.ACTION_MEDIA_BUTTON.equals(intent.getAction())) {
                 KeyEvent event = (KeyEvent)intent.getParcelableExtra(Intent.EXTRA_KEY_EVENT);
                 if (KeyEvent.KEYCODE_MEDIA_PLAY == event.getKeyCode()) {
                     // Handle key press.
-                    countupwards();
+               //     countupwards();
                 }
+
+                if(KeyEvent.KEYCODE_CHANNEL_UP== event.getKeyCode()){
+
+                //    countupwards();
+                }
+
+                if(KeyEvent.KEYCODE_CHANNEL_DOWN== event.getKeyCode()){
+
+                //    countupwards();
+                }
+
+                if(KeyEvent.KEYCODE_HEADSETHOOK== event.getKeyCode()){
+
+                 //   countupwards();
+                }
+
+
+                if(KeyEvent.KEYCODE_MEDIA_NEXT== event.getKeyCode()){
+
+                //    countupwards();
+                }
+
+                if(KeyEvent.KEYCODE_MEDIA_STOP== event.getKeyCode()){
+
+                //    countupwards();
+                }
+
+
+                if(KeyEvent.KEYCODE_MINUS== event.getKeyCode()){
+
+               //     countupwards();
+                }
+
+                if(KeyEvent.KEYCODE_MUTE== event.getKeyCode()){
+
+                //    countupwards();
+                }
+
+
+
+
+
             }
+
+
+
         }
     }
 
+    
+    
+    
 
-
-
-    public class Counter{
-
-        int number;
-
-        public Counter(int number) {
-            this.number = number;
-        }
-
-        public int getNumber() {
-            return number;
-        }
-
-        public void setNumber(int number) {
-            this.number = number;
-        }
-    }
-
-
-    public Counter getCounter() {
-        return counter;
-    }
-
-    public void setCounter(Counter counter) {
-        this.counter = counter;
-    }
 }
-
