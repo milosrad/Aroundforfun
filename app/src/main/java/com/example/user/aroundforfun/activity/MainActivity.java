@@ -29,10 +29,12 @@ import android.widget.Button;
 import android.widget.MediaController;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.example.user.aroundforfun.R;
 import com.example.user.aroundforfun.activity.receiver.AudioControlReceiver;
+import com.example.user.aroundforfun.activity.receiver.RemoteControlReceiver;
 
 import java.io.File;
 import java.io.IOException;
@@ -67,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
     private int mSoundID;
     private boolean isLoaded = false;
 
-    private RemoteControlReceiver myReceiver;
+    private RemoteControlReceiver myReceiver=null;
 
     IntentFilter filter;
 
@@ -94,6 +96,8 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
 
         initComponents();
+
+        registerReceiver(myReceiver,filter);
         addListeners();
         
        
@@ -120,24 +124,30 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
         fade_in_animation= AnimationUtils.loadAnimation(this,R.anim.fade_in);
 
-    /*    myReceiver=new RemoteControlReceiver();
+        myReceiver=new RemoteControlReceiver();
 
+        myReceiver.setMainActivity(this);
         filter=new IntentFilter(Intent.ACTION_MEDIA_BUTTON);
 
-        filter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);
 
-        filter.addAction(Intent.ACTION_HEADSET_PLUG);
+     //   filter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);
 
-        registerReceiver(myReceiver,filter); */
+     //   filter.addAction(Intent.ACTION_MEDIA_BUTTON);
+
+     //   registerReceiver(myReceiver,filter);
 
 
 
-        audioManager= (AudioManager) getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
+    //    audioManager= (AudioManager) getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
 
-        receiver= new ComponentName(this,MainActivity.RemoteControlReceiver.class);
+     //   receiver= new ComponentName(this,MainActivity.RemoteControlReceiver.class);
+     //   receiver= new ComponentName(this,RemoteControlReceiver.class);
+     //   receiver= new ComponentName(this, myReceiver.getClass());
+
     //    audioManager.registerMediaButtonEventReceiver(new ComponentName(getPackageName(), RemoteControlReceiver.class.getName()));
     //    audioManager.registerMediaButtonEventReceiver(new ComponentName(this, RemoteControlReceiver.class));
-        audioManager.registerMediaButtonEventReceiver(receiver);
+    //    audioManager.registerMediaButtonEventReceiver(receiver);
+    //    audioManager.registerMediaButtonEventReceiver(myReceiver);
        // audioManager.unregisterMediaButtonEventReceiver(new ComponentName(getPackageName(), RemoteControlReceiver.class.getName()));
 
 
@@ -173,18 +183,18 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
     @Override
     public void onResume() {
 
-     //   registerReceiver(myReceiver, filter);
+        registerReceiver(myReceiver, filter);
 
      //   audioManager.registerMediaButtonEventReceiver(new ComponentName(getPackageName(), RemoteControlReceiver.class.getName()));
-        audioManager.registerMediaButtonEventReceiver(receiver);
+     //   audioManager.registerMediaButtonEventReceiver(receiver);
         super.onResume();
     }
 
     @Override
     protected void onPause() {
-    //    unregisterReceiver(myReceiver);
+        unregisterReceiver(myReceiver);
     //    audioManager.unregisterMediaButtonEventReceiver(new ComponentName(getPackageName(), RemoteControlReceiver.class.getName()));
-        audioManager.unregisterMediaButtonEventReceiver(receiver);
+    //    audioManager.unregisterMediaButtonEventReceiver(receiver);
         super.onPause();
     }
 
@@ -192,11 +202,17 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
     protected void onStop() {
         super.onStop();
      //   unregisterReceiver(myReceiver);
-        audioManager.unregisterMediaButtonEventReceiver(new ComponentName(getPackageName(), RemoteControlReceiver.class.getName()));
+     //   audioManager.unregisterMediaButtonEventReceiver(new ComponentName(getPackageName(), RemoteControlReceiver.class.getName()));
 
     }
 
-    private void countupwards(){
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(myReceiver);
+    }
+
+    public void countupwards(){
 
         number=Integer.parseInt(mCounter.getText().toString());
 
@@ -428,57 +444,89 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
     }
 
 
-    public static class RemoteControlReceiver extends BroadcastReceiver {
+  /*  public static class RemoteControlReceiver extends BroadcastReceiver {
+
+     //   MainActivity mainActivity;
 
         public RemoteControlReceiver(){
 
             super();
+        //    mainActivity=maContext;
         }
+
         @Override
         public void onReceive(Context context, Intent intent) {
             if (Intent.ACTION_MEDIA_BUTTON.equals(intent.getAction())) {
                 KeyEvent event = (KeyEvent)intent.getParcelableExtra(Intent.EXTRA_KEY_EVENT);
                 if (KeyEvent.KEYCODE_MEDIA_PLAY == event.getKeyCode()) {
                     // Handle key press.
-               //     countupwards();
+                //  //  mainActivity.countupwards();
+                    Toast.makeText(context,"Pritisnuto",Toast.LENGTH_LONG).show();
                 }
 
                 if(KeyEvent.KEYCODE_CHANNEL_UP== event.getKeyCode()){
 
-                //    countupwards();
+                //    mainActivity.countupwards();
+                    Toast.makeText(context,"Pritisnuto",Toast.LENGTH_LONG).show();
                 }
 
                 if(KeyEvent.KEYCODE_CHANNEL_DOWN== event.getKeyCode()){
 
-                //    countupwards();
+                 //   mainActivity.countupwards();
+                    Toast.makeText(context,"Pritisnuto",Toast.LENGTH_LONG).show();
                 }
 
                 if(KeyEvent.KEYCODE_HEADSETHOOK== event.getKeyCode()){
 
-                 //   countupwards();
+                //    mainActivity.countupwards();
+                    Toast.makeText(context,"Pritisnuto",Toast.LENGTH_LONG).show();
                 }
 
 
                 if(KeyEvent.KEYCODE_MEDIA_NEXT== event.getKeyCode()){
 
-                //    countupwards();
+                 //   mainActivity.countupwards();
+                    Toast.makeText(context,"Pritisnuto",Toast.LENGTH_LONG).show();
                 }
 
                 if(KeyEvent.KEYCODE_MEDIA_STOP== event.getKeyCode()){
 
-                //    countupwards();
+                //   mainActivity.countupwards();
+                    Toast.makeText(context,"Pritisnuto",Toast.LENGTH_LONG).show();
                 }
 
 
                 if(KeyEvent.KEYCODE_MINUS== event.getKeyCode()){
 
-               //     countupwards();
+                 //   mainActivity.countupwards();
+                    Toast.makeText(context,"Pritisnuto",Toast.LENGTH_LONG).show();
                 }
 
                 if(KeyEvent.KEYCODE_MUTE== event.getKeyCode()){
 
-                //    countupwards();
+                //    mainActivity.countupwards();
+                    Toast.makeText(context,"Pritisnuto",Toast.LENGTH_LONG).show();
                 }
+
+                if(KeyEvent.KEYCODE_MEDIA_PREVIOUS== event.getKeyCode()){
+
+                 //       mainActivity.countupwards();
+                    Toast.makeText(context,"Pritisnuto",Toast.LENGTH_LONG).show();
+                }
+
+                if(KeyEvent.KEYCODE_MEDIA_PAUSE== event.getKeyCode()){
+
+                 //           mainActivity.countupwards();
+                    Toast.makeText(context,"Pritisnuto",Toast.LENGTH_LONG).show();
+                }
+
+                if(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE== event.getKeyCode()){
+
+                  //          mainActivity.countupwards();
+                    Toast.makeText(context,"Pritisnuto",Toast.LENGTH_LONG).show();
+                }
+
+
 
 
 
@@ -489,7 +537,110 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
 
         }
-    }
+    } */
+
+  /*  private static void countupwardsmedia(){
+
+        number=Integer.parseInt(mCounter.getText().toString());
+
+        number++;
+        mCounter.setText(""+number);
+
+        if (number%counterlimit==0){
+            //mCounter.startAnimation(fade_in_animation);
+            mRoot.startAnimation(fade_in_animation);
+
+            try {
+                Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+                Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
+                r.play();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        /*    String soundAnimUrl = "/sdcard/ringtones/high_priority.wav";
+
+            this.setVolumeControlStream(AudioManager.STREAM_MUSIC);
+            mSoundPool = new SoundPool(10, AudioManager.STREAM_MUSIC, 0);
+            mSoundID = mSoundPool
+                    .load(getFile(Environment.DIRECTORY_RINGTONES, soundAnimUrl)
+                            .getPath(), 1);
+            mSoundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
+                @Override
+                public void onLoadComplete(SoundPool soundPool, int sampleId,
+                                           int status) {
+                    isLoaded = true;
+
+                    // Play the sound when loaded
+                    play();
+                }
+            }); */
+
+
+
+            //    playSound();
+
+            //    videoView.setVisibility(View.VISIBLE);
+
+            //    playVideo();
+
+
+         /*   Intent intent= new Intent(MainActivity.this,VideoViewActivity.class);
+            startActivity(intent);
+            finish(); */
+
+       /*     try {
+                Thread.sleep(7000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } */
+
+
+         /*   Intent intent = new Intent(android.content.Intent.ACTION_VIEW);
+            Uri data = Uri.parse(stringPath3);
+            intent.setDataAndType(data, "video/mp4");
+        //    intent.setDataAndType(data, "video/*");
+            startActivity(intent); */
+
+         /*   Intent intent = new Intent(Intent.ACTION_VIEW);
+
+            File sdCard = Environment.getExternalStorageDirectory();
+            File file = new File(sdCard, "/movies/tesla_video_srbija_fullHD_saLogotipom.mp4");
+
+            intent.setDataAndType(Uri.fromFile(file), "video/*");
+
+            startActivity(intent); */
+
+         /*   surfaceView.setVisibility(View.VISIBLE);
+
+            mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            mediaPlayer.setDisplay(surfaceHolder);
+
+            try {
+                mediaPlayer.setDataSource(stringPath);
+                mediaPlayer.prepare();
+            } catch (IllegalArgumentException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (IllegalStateException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+            mediaPlayer.start(); */
+
+          /*  try {
+                Thread.sleep(3500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } */
+
+    //    }
+
+   // }
 
     
     
